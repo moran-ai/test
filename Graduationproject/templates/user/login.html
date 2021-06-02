@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}
+    用户登录
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+    #tab span{
+        display: inline-block;
+        width: 120px;
+        text-align: center;
+        cursor: default;
+    }
+    #tips{
+        color: red;
+        font-size: 14px;
+    }
+    .bg{
+        background-image: url("{{ url_for('static', filename='35.jpg') }}");
+        background-size: 1800px 300px;
+    }
+    </style>
+{% endblock %}
+
+{% block newcontent %}
+    <body class="bg">
+    <div>
+    <h1 align="center" style="color: black">
+        用户登录
+    </h1>
+    <div class="logintab">
+    <p id="tips">{{ msg }}</p>
+    <form class="form-horizontal" method="post" action="{{ url_for('user.login') }}">
+
+  <div class="form-group" style="padding-top: 100px;">
+    <label for="inputUsername" class="col-md-2 control-label" >用户名</label>
+    <div class="col-md-2">
+      <input type="text" class="form-control" id="inputUsername" placeholder="username" name="username">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword" class="col-md-2 control-label">密码</label>
+    <div class="col-md-2">
+      <input type="password" class="form-control" id="inputPassword" placeholder="password" name="password">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary col-md-1">登&nbsp;&nbsp;录</button>
+    </div>
+  </div>
+</form>
+    </div>
+    </div>
+    </body>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block title %}
+    用户注册
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        #container {
+            background-image: url("{{ url_for('static', filename='35.jpg') }}");
+            background-size: 1800px 300px;
+        }
+
+        #bg {
+            height: 550px;
+            padding-top: 100px;
+        }
+    </style>
+{% endblock %}
+
+{% block newcontent %}
+    <body id="container">
+    <div>
+        <h1 align="center">
+            用户注册
+        </h1>
+        <div id="bg">
+            <form class="form-horizontal" method="post" action="{{ url_for('user.register') }}">
+                <div class="form-group">
+                    <label for="inputUsername" class="col-md-2 control-label" style="color: hotpink">用户名</label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" id="inputUsername" placeholder="username"
+                               name="username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="col-md-2 control-label" style="color: hotpink">密码</label>
+                    <div class="col-md-3">
+                        <input type="password" class="form-control" id="inputPassword" placeholder="password"
+                               name="password"> <span></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputConfirm" class="col-md-2 control-label">确认密码</label>
+                    <div class="col-md-3">
+                        <input type="password" class="form-control" id="inputConfirm" placeholder="confirm password"
+                               name="repassword">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPhone" class="col-md-2 control-label">手机号码</label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" id="inputPhone" placeholder="phone number" name="phone">
+                        <span> </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail" class="col-md-2 control-label">邮箱</label>
+                    <div class="col-md-3">
+                        <input type="email" class="form-control" id="inputEmail" placeholder="email"
+                               name="email"><span></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-primary col-md-1" style="position: absolute; left: 100px">注&nbsp;&nbsp;&nbsp;&nbsp;册</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </body>
+{% endblock %}
+
+{# 添加脚本 #}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $('#inputPhone').blur(function () {
+            let phone = $(this).val();
+            let span_ele = $(this).next('span');
+            if (phone.length == 11) {
+                span_ele.text('');
+                $.get('{{ url_for('user.check_phone') }}', {phone: phone}, function (data) {
+                    // console.log(data)  // 控制台打印结果
+                    if (data.code != 200) {
+                        span_ele.css({"color": "#ff0011", "font-size": "20px"});
+                        span_ele.text(data.msg)
+                    }
+                })
+            } else {
+                span_ele.css({"color": "#ff0011", "font-size": "20px"});
+                span_ele.text('手机号码必须为11位');
+            }
+        });
+        $('#inputPassword').blur(function () {
+            let password = $(this).val();
+            let span_pass = $(this).next('span');
+            if (password.length >= 6) {
+                span_pass.text('');
+                $.get('{{ url_for('user.check_password') }}', {password: password}, function (data) {
+                    console.log(data)
+                })
+            } else {
+                span_pass.css({"color": "#ff0011", "font-size": "20px"});
+                span_pass.text('密码至少为6位')
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

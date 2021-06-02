@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    相册
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        .bg {
+            background-color: #b3d4fc;
+            background-image: url("{{ url_for('static', filename='35.jpg') }}");
+            background-size: 1800px 300px;
+        {# 背景图片大小 宽 高 #}
+        }
+
+        #t {
+            width: 80px;
+            height: 50px;
+            font-size: 15px;
+            color: white;
+            background-color: #8be9fd;
+        }
+
+        #t1 {
+            width: 170px;
+            height: 50px;
+            font-size: 15px;
+            color: white;
+            background-color: #8be9fd;
+        }
+
+    </style>
+{% endblock %}
+
+{% block newcontent %}
+    <body class="bg">
+    <form action="{{ url_for('user.upload') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <br>
+        <button type="submit" class="btn btn-default" id="t">上传</button>
+    </form>
+    <br>
+    <button type="submit" class="btn btn-default" id="t1"><a href="{{ url_for('user.l_img') }}">点击查看上传的图片</a></button>
+    <br>
+    <p>
+        {% for img in imgs %}
+            <img src="{{ url_for('static', filename='./photo/' + img) }}" width="400px" height="400px" alt="图片错误">
+        {% endfor %}
+    </p>
+    </body>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

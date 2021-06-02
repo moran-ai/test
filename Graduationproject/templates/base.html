@@ -1,0 +1,273 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}首页{% endblock %}
+
+{% block styles %}
+    {#    继承父类#}
+    {{ super() }}
+    <style>
+        #myfoot {
+            border-top: 1px solid darkgray;
+            font-size: 14px;
+            text-align: center;
+            color: lightgray;
+        }
+
+        #mycontent {
+            background-image: url("{{ url_for('static', filename='/2.jpg') }}");
+        {#background-size: 20%;#} height: 600px;
+        }
+
+    </style>
+{% endblock %}
+
+{# 导航栏 #}
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+
+                <a class="navbar-brand" href="#">yami</a> {# 这里可以换成图标，使用<img>标签加静态文件
+      <a class="navbar-brand" href="#">
+
+{#          <img src="{{ url_for('static', filename='12.jpg') }}" width="35px" height="35px" alt="图片错误">#}
+                </a> {# 这里可以换成图标，使用<img>标签加静态文件 #}
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="{{ url_for('user.index') }}" style="color: hotpink">首页 <span
+                            class="sr-only">(current)</span></a></li>
+                    <li><a href="{{ url_for("user.upload") }}" style="color: hotpink">我的相册</a></li>
+                    <li><a href="{{ url_for('article.publish_airutal') }}" style="color: hotpink">文章发表</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false" style="color: hotpink">
+                            文章分类<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('article.type_search') }}?tid=1" style="color: hotpink">web</a></li>
+                            <li><a href="{{ url_for('article.type_search') }}?tid=2" style="color: hotpink">java</a>
+                            </li>
+                            <li><a href="{{ url_for('article.type_search') }}?tid=3" style="color: hotpink">Python</a>
+                            </li>
+                            <li><a href="{{ url_for('article.type_search') }}?tid=4" style="color: hotpink">C++</a></li>
+                            <li><a href="{{ url_for('article.type_search') }}?tid=5" style="color: hotpink">C</a></li>
+                            <li><a href="{{ url_for('article.type_search') }}?tid=6"
+                                   style="color: hotpink">JavaScript</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="search" placeholder="输入关键字">
+                    </div>
+                    <button type="button" id="search" class="btn btn-default" style="color: hotpink;">点击搜索</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user %}
+                        <img
+                                src="{% if user.icon %}
+                        {{ url_for('static', filename=user.icon) }}
+                        {% else %}
+                        {{ url_for('static', filename='3.jpg') }}
+                        {% endif %}"
+                                width="30px" height="30px"
+                                style="position: absolute; right: 100px; top: 10px;border-radius: 50%;"
+                                alt="图片错误">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">{{ user.username }} <span
+                                    class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('user.user_center') }}">用户中心</a></li>
+                                <li role="separator" class="divider"></li>
+                                {# 分割线 #}
+                                <li><a href="{{ url_for('user.logout') }}">退出登录</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ url_for('user.login') }}" style="color: hotpink">登录</a></li>
+                        <li><a href="{{ url_for('user.register') }}" style="color: hotpink">注册</a></li>
+                    {% endif %}
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+{% endblock %}
+
+{# 中心内容 #}
+
+{% block content %}
+    {% block newcontent %}
+        <h1 style="height: 40px; margin-top: 10px; background-color: paleturquoise; color: hotpink">
+            Hello, ~jkk~
+        </h1>
+        <p id="mycontent">
+            <img src="{{ url_for('static', filename='5.jpg') }}" width="280px" height="280px" alt="图片错误">
+            <img src="{{ url_for('static', filename='6.jpg') }}" width="280px" height="280x" align="right" alt="图片错误">
+            <img src="{{ url_for('static', filename='7.jpg') }}" width="280px" height="280x"
+                 style="position: absolute;left: 0; bottom: 0" alt="图片错误">
+            <img src="{{ url_for('static', filename='8.jpg') }}" width="280px" height="280x"
+                 style="position: absolute;right: 0; bottom: 0" alt="图片错误">
+            <img src="{{ url_for('static', filename='1.jpg') }}" width="500px" height="500x"
+                 style="position: absolute;left: 735px; bottom: 0" alt="图片错误">
+
+            <textarea id="mycontent" cols="50" rows="50"
+                      style="position: absolute; left: 310px; bottom: 0;color: hotpink;font-weight: 700;border:none;">
+                Every night in my dreams
+
+                在我bai的每一个梦中
+
+                I see you
+
+                我都能看到你
+
+                I feel you
+
+                我都能感受到你
+
+                That is how I know you go on
+
+                我便确定了，你在永恒不变的跟随着我
+
+                Far across the distance
+
+                跨越距离
+
+                And spaces between us.
+
+                无论生死
+
+                You have come to show you go on
+
+                你悄悄的来找我，证明你的灵魂永存
+
+                Near far,
+
+                或远或近
+
+                wherever you are
+
+                无论你身在何方
+
+                I believe that the heart does go on
+
+                我都相信，我们的心是亘古不变的
+
+                Once more,
+
+                你再一次
+
+                you open the door,
+
+                悄悄打开了我的房门
+
+                And you're here in my heart.
+
+                你已被深深的刻在了我的心里
+
+                And my heart will go on and on
+
+                便会随着我的心一起，在这世界上永存
+
+                Love can touch us one time.
+
+                也许我们的爱情，只是昙花一现
+
+                Love can touch us one time.
+
+                也许我们的爱情，只是昙花一现
+
+                And last for a lifetime
+
+                但这份爱情也伴我终身
+
+                And never let go till we're gone,
+
+                这份爱情不会湮于岁月，只要我还活着
+
+                Love was when I loved you
+
+                当我与你心心相依时，才感受到了爱情
+
+                One true time I hold to.
+
+                那是真实又纯真的爱情
+
+                In my life we'll always go on.
+
+                只要我还在世，你我就会并肩前行，青史留名
+
+                Near far,
+
+                或远或近
+
+                wherever you are
+
+                无论你身在何方
+
+                I believe that the heart does go on
+
+                我都相信我们的心是亘古不变的
+
+                Once more,
+
+                再一次吧
+
+                you open the door,
+
+                再悄悄的打开我的房门
+
+                And you've been in my heart,
+
+                你已被深深的刻在了我的心里
+
+                And my heart will go on and on
+
+                便会随着我的心一起，在这世界上永远的活下去
+
+                You're here,
+
+                只要你伴随着我
+
+                You're here,
+
+                只要你伴随着我
+
+                there's nothing I fear.
+
+                我便会勇敢起来，不惧任何事物
+
+                And I know that my heart will go on
+
+                我也知道，我的心必将永恒
+
+                we'll stay forever this way.
+
+                你也会一直一直的伴随在我的身边
+
+                You are safe in my heart,
+
+                最安全的地方也比不上我的心里
+
+                and my heart will go on and on
+
+                因为你会和我的心一起，在这世界上永远的活下去
+         </textarea>
+        </p>
+        {#        <img src="{{ url_for('static', filename='/1.jpg') }}" alt="图片错误">#}
+    {% endblock %}
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $('#search').click(function () {
+            let content = $("input[name='search']").val();
+            location.href = '{{ url_for("article.search") }}?search=' + content
+
+        });
+    </script>
+
+    {% block footer %}
+        <p id="myfoot">京ICP备11008100号-6京公网安备11010802020853</p>
+    {% endblock %}
+{% endblock %}

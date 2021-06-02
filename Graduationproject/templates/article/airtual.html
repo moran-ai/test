@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    文章发表
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        #bg{
+            background-image: url("{{ url_for('static', filename='35.jpg') }}");
+            background-size: 1800px 300px;
+        }
+    </style>
+{% endblock %}
+
+{% block newcontent %}
+    <body id="bg">
+    <form action="{{ url_for('article.publish_airutal') }}" method="post">
+        <label for="title" style="position: absolute; left: 420px; top: 165px">文章标题</label>
+        <input class="col-md-3" type="text" name="title" id="title" style="position: absolute; left: 480px; top: 160px">
+            <p>
+                <select name="type" class="col-sm-offset-6 col-sm-4" style="position: absolute; right: 600px; top: 100px">
+                    <option value="0">请选择文章分类</option>
+                    {% for type in types %}
+                        <option value="{{ type.id }}">{{ type.type_name }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        <textarea name="content"  cols="100" rows="20" style="position: absolute; left: 360px;top: 200px">
+
+        </textarea>
+        <div class="col-sm-offset-5 col-sm-3" style="position: absolute; bottom: 50px">
+            <button type="submit" class="btn btn-primary col-md-5">发表文章</button>
+        </div>
+    </form>
+    </body>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

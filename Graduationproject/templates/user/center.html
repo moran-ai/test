@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block title %}
+    用户中心
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        #center{
+            background-image: url("{{ url_for('static', filename='35.jpg') }}");
+            background-size: 1800px 300px;
+        }
+        #tips{
+        color: red;
+        font-size: 14px;
+    }
+    </style>
+{% endblock %}
+
+{% block newcontent %}
+    <body id="center">
+    <form action="{{ url_for('user.user_change') }}" method="post" enctype="multipart/form-data">
+    <div>
+            <div>
+                <span style="position: absolute; top: 100px">
+                    <b>
+                        <a href="{{ url_for('user.user_center') }}">
+                            <h1>
+                        用户信息修改
+                        </h1>
+                        </a>
+                    </b>
+                </span>
+                <br>
+                <span style="position: absolute; top: 200px">
+                    <b>
+                       <a href="{{ url_for('article.publish_airutal') }}"><h1>文章发表</h1></a>
+                    </b>
+                </span>
+                <span style="position: absolute; top: 300px">
+                    <b>
+                        <a href="{{ url_for("user.upload") }}">
+                            <h1>我的相册</h1>
+                        </a>
+                    </b>
+                </span>
+            </div>
+            <h2 style="position: absolute; left: 600px; top: 160px; color: black">用户信息修改</h2>
+            <br>
+                  <label for="inputUsername" style="position: absolute; left: 460px; top: 248px; color: hotpink">用户名</label>
+                  <label for="inputUsername" style="position: absolute; left: 460px; top: 303px; color: hotpink">手机号</label>
+                  <label for="inputUsername" style="position: absolute; left: 474px; top: 358px; color: hotpink">邮箱</label>
+            <div class="col-md-3" style="position: absolute; left: 510px; width: 350px; top: 240px">
+             <input  type="text"  class="form-control" id="inputUsername" placeholder="username" name="username" value="{{ g.user.username }}">
+                <br>
+            <input type="number" class="form-control" id="inputPhone" placeholder="phone" name="phone" value="{{ g.user.phone }}"><span></span>
+                <br>
+            <input type="email" class="form-control" id="inputEmail" placeholder="email" name="email" value="{{ g.user.email }}">
+                <br>
+                <input type="file" name="file">
+                 <p id="tips">
+                        {{ msg }}
+                 </p>
+                <br>
+                <p>
+                    <img src="
+                        {% if user.icon %}
+                            {{ url_for('static', filename=user.icon) }}
+                        {% else %}
+                            {{ url_for('static', filename='3.jpg') }}
+                        {% endif %}"
+                         width="90px" height="90px"  alt="图片错误">
+                </p>
+                <br>
+                <br>
+                <div class="col-sm-offset-4 col-sm-10">
+                    <button type="submit" class="btn btn-primary col-md-5">确认修改</button>
+                </div>
+            </div>
+    </div>
+    </form>
+    </body>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $('#inputPhone').blur(function () {
+            let phone = $(this).val();
+            let span_ele = $(this).next('span');
+            if (phone.length == 11){
+                span_ele.text('');
+                $.get('{{ url_for('user.check_phone') }}', {phone:phone}, function (data) {
+                // console.log(data)  // 控制台打印结果
+                    if(data.code!=200){
+                        span_ele.css({"color": "#ff0011", "font-size": "20px"});
+                        span_ele.text(data.msg)
+                    }
+            })
+            }else {
+                span_ele.css({"color": "#ff0011", "font-size": "20px"});
+                span_ele.text('手机号码必须为11位');
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

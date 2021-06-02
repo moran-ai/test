@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}
+    返回首页
+{% endblock %}
+{% block styles %}
+    {{ super() }}
+    <style>
+        #bg{
+            width: 1500px;
+            height: 660px;
+            background-image: url("../../static/2.jpg");
+    }
+    </style>
+{% endblock %}
+
+{% block newcontent %}
+    <body id="bg">
+    <div>
+        <h3><a href="{{ url_for('user.index') }}" style="color: hotpink">{{ msg }}</a></h3>
+    </div>
+    </body>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

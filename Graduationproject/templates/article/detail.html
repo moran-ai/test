@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% block title %}
+    详情
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        #contanier{
+            width: 1200px;
+            margin: 0 auto;
+        }
+        #left{
+            float: left;
+        }
+
+        #right{
+            float: right;
+        }
+        #bg{
+            background-image: url("{{ url_for('static', filename='35.jpg') }}");
+            background-size: 1800px 300px;
+        }
+    </style>
+{% endblock %}
+
+{% block newcontent %}
+    <body id="bg">
+    <div id="contanier">
+        <div id="detail">
+            {# 文章标题 #}
+            <h2>{{ article.title }}</h2>
+            <p>
+                <div>
+                    作者:{{ article.user.username }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    发布时间：{{ article.pdatetime }}
+                </div>
+            <div id="right">
+                {# 点赞数 #}
+                <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;&nbsp;<span tag="0">{{ article.click_num }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                {# 收藏数 #}
+                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;&nbsp;<span tag="0">{{ article.love_num }}</span>
+            </div>
+            </p>
+            <br>
+            <div>
+                {# 文章内容 #}
+                {{ article.content }}
+            </div>
+            <br>
+            <hr>
+            <div id="comment">
+                <p>文章评论</p>
+                <form action="{{ url_for('article.article_comment') }}" method="post">
+                    {# hidden 隐藏 #}
+                    {#  文章id  #}
+                    <input type="hidden" name="aid" value="{{ article.id }}">
+                <div>
+                    <p>
+                        {# 文本输入框 #}
+                        <textarea name="comment"  cols="60" rows="5"></textarea>
+                    </p>
+                    <p>
+                        <input type="submit" value="评论" class="btn btn-info">
+                    </p>
+                </div>
+                    </form>
+            </div>
+        </div>
+        <br>
+        <hr>
+        <div id="comment_item">
+        {% if comments.items %}
+            {% for comment in comments.items %}
+                    <div class="item">
+            {# 用户头像 #}
+                        <div id="item_left">
+                            <img src="{% if comment.user.icon %}{{ url_for('static',
+                            filename=comment.user.icon) }}
+{% else %} {{ url_for('static', filename='3.jpg') }}
+{% endif %}" alt="图片错误" width="50px" height="50px">
+                        </div>
+             {# 用户名称，评论时间，评论内容 #}
+                    <div id="item_right">
+                        <p>
+                            <span>{{ comment.user.username }}</span>
+                            {# 文章评论时间 #}
+                            <span>{{ comment.cdatetime }}</span>
+                        </p>
+                        <p>
+                            {# 评论内容 #}
+                            {{ comment.comment }}
+                        </p>
+                    </div>
+                    </div>
+            {% endfor %}
+            {% else %}
+            <div id="item">
+                    <p style="color: black; font-size: 20px;top: 100px">
+                        当前还没有评论哦,赶快发表吧~~
+                    </p>
+            </div>
+        {% endif %}
+
+        </div>
+    <nav aria-label="...">
+            <ul class="pager">
+                {# 上一页 #}
+                <li class="previous {% if not comments.has_prev %} disabled {% endif %}">
+                    <a href="{{ article.article_detail }}?page={{ comments.prev_num }}&aid={{ article.id }}"><span aria-hidden="true">&larr;</span>上一页</a>
+                </li>
+
+              {# 下一页 #}
+                <li class="next {% if not comments.has_next %} disabled {% endif %}">
+                    <a href="{{ article.article_detail }}?page={{ comments.next_num }}&aid={{ article.id }}">下一页<span aria-hidden="true">&rarr;</span></a>
+                </li>
+            </ul>
+</nav>
+    </div>
+    </body>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $(function () {
+            // 收藏
+            {# 收藏的数量 #}
+            $('.glyphicon-heart').click(function () {
+                let $this = $(this);
+                let tag = $this.next('span').attr('tag'); // 标志位
+                $.get('{{ url_for('article.article_save') }}', {aid: {{article.id}},
+                    tag: tag}, function (data) {
+                    $this.next('span').text(data.num); // 设置数值
+                });
+                // 点过
+                if (tag==1){
+                    $this.css({'color': 'black'});
+                    $this.next('span').attr('tag', '0');
+                }else {  // 未点过
+                    $this.css({'color': 'hotpink'});
+                    $this.next('span').attr('tag', '1');
+                }
+            });
+
+            // 点击量
+            $('.glyphicon-thumbs-up').click(function () {
+                let $this = $(this);
+                let tag = $this.next('span').attr('tag');
+                {# 点赞的数量 #}
+                $.get('{{ url_for('article.article_love') }}',  {aid: {{article.id}},
+                    tag: tag}, function (data) {
+                        $this.next('span').text(data.num);
+                    });
+                if(tag==1){
+                    $this.css({'color': 'black'});
+                    $this.next('span').attr('tag', '0');
+                }else {
+                    $this.css({'color': 'hotpink'});
+                    $this.next('span').attr('tag', '1');
+                }
+                });
+        })
+    </script>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

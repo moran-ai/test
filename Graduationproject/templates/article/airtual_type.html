@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    文章分类
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        #bggg{
+            background-color: #b3d4fc;
+            background-image: url("{{ url_for('static', filename='35.jpg') }}");
+            background-size: 1800px 300px;  {# 背景图片大小 宽 高 #}
+        }
+
+        #contanier{
+            width: 800px;
+            margin: 0 auto;  /* 自动居中对齐*/
+        }
+
+        .article{
+            width: 900px;
+            background-color:rgba(255,255,255,0.5); {# 背景透明化 #}
+            height: 165px;
+            margin-bottom: 20px;
+            border-bottom: 1px  gray;  /* 底部边线 */
+            font-size: 15px;
+            color: black;
+        }
+    </style>
+{% endblock %}
+
+{% block newcontent %}
+    <body id="bggg">
+        <div id="contanier">
+    {% for article in type.articles %}
+        <div class="article">
+            <h4>
+                <a href="{{ url_for('article.article_detail') }}?aid={{ article.id }}" style="color: #721f27">{{ article.title }}</a>
+            </h4>
+            <p>
+                <span>作者: {{ article.user.username }}</span>
+                <br>
+                <br>
+                <span>{{ article.content | cdecode | safe}}</span>
+            </p>
+        <div>
+            <span style="margin-left: 0">发布时间：{{ article.pdatetime }}</span>
+            <span>收藏：{{ article.save_num }}</span>&nbsp;<span>点击量：{{ article.click_num }}</span>&nbsp;<span>点赞量：{{ article.love_num }}</span>
+        </div>
+        </div>
+    {% endfor %}
+
+
+
+    </div>
+    </body>
+{% endblock %}
+
+
+{% block footer %}
+
+{% endblock %}
